@@ -17,30 +17,6 @@ module.exports = {
   titleTemplate: "%s | ntony",
   siteDescription: "Some info about myself",
   plugins: [
-    {
-      use: "@gridsome/source-filesystem",
-      options: {
-        path: "socials/**/*.md",
-        typeName: "SocialItem",
-        resolveAbsolutePaths: false,
-        remark: {
-          externalLinksTarget: "_blank",
-          externalLinksRel: ["nofollow", "noopener", "noreferrer"]
-        }
-      }
-    },
-    {
-      use: "@gridsome/source-filesystem",
-      options: {
-        path: "blocks/**/*.md",
-        typeName: "BlockItem",
-        resolveAbsolutePaths: false,
-        remark: {
-          externalLinksTarget: "_blank",
-          externalLinksRel: ["nofollow", "noopener", "noreferrer"]
-        }
-      }
-    },
   ],
   transformers: {
     remark: {
