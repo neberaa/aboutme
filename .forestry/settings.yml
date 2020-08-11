@@ -21,14 +21,14 @@ sections:
 - type: document
   path: data/theme.json
   label: Theme config
-upload_dir: uploads
-public_path: "/uploads"
+upload_dir: ''
+public_path: ''
 front_matter_path: ''
-use_front_matter_path: false
+use_front_matter_path: 
 file_template: ":filename:"
 build:
-  preview_command: gridsome build
-  publish_command: gridsome build
   preview_output_directory: dist
-  output_directory: dist
+  install_dependencies_command: npm install
+  preview_docker_image: forestryio/node:12
+  mount_path: "/srv"
   instant_preview_command: vuepress dev -p 8080 -h 0.0.0.0
