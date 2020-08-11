@@ -1,11 +1,8 @@
-// This is where project configuration and installed plugin options are located.
-// Learn more: https://gridsome.org/docs/config
-
 module.exports = {
-  siteName: "Portfolio",
-  siteUrl: `https://www.itsnwa.com`,
-  titleTemplate: "%s - NWA",
-  siteDescription: "Creative technologist",
+  siteName: "A.N. website",
+  siteUrl: `https://www.ntony.netlify.app`,
+  titleTemplate: "%s | ntony",
+  siteDescription: "Some info about myself",
   plugins: [
     {
       use: "@gridsome/source-filesystem",
