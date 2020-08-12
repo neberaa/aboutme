@@ -16,9 +16,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .footer {
-    font-size: 0.8rem;
-    padding: 6rem 0;
+  display: block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 60px 40px;
+  z-index: 0;
+  @include screenBreakpoint2(phone) {
+    padding: 40px 20px;
+  }
 }
 </style>
