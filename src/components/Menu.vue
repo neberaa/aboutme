@@ -2,9 +2,9 @@
   <div class="menu-container">
     <div class="menu-container__content">
       <nav class="navigation">
-        <a href="/">Menu item</a>
-        <a href="/">Menu item2</a>
-        <a href="/">Menu item3</a>
+        <a href="/">Home</a>
+        <a href="/">About</a>
+        <a href="/">Portfolio</a>
       </nav>
       <main class="contact-info"></main>
       <footer class="footer">
