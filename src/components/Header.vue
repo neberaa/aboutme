@@ -3,12 +3,7 @@
     <div class="container">
       <div class="left">
         <g-link :to="{ name: 'home' }" class="home-link">
-<!--          <img-->
-<!--            src="../../static/logo.png"-->
-<!--            :alt="settings.site_name"-->
-<!--            class="logo"-->
-<!--          />-->
-          <h4>n/tony></h4>
+          <span>n/tony></span>
         </g-link>
       </div>
       <section class="lang right">
@@ -27,6 +22,8 @@
       </section>
     </div>
     <div
+      @mouseover="menuPreOpen = true"
+      @mouseleave="menuPreOpen = false"
       class="hamburger hamburger--spin js-hamburger"
       :class="{'is-active': menuIsOpen}"
       @click="menuIsOpen = !menuIsOpen">
@@ -38,6 +35,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
   data() {
     return {
@@ -45,9 +43,22 @@ export default {
       settings: require("../../data/theme.json"),
       langActive: true,
       menuIsOpen: false,
+      menuPreOpen: false,
+    }
+  },
+  watch: {
+    menuPreOpen(state) {
+      this.togglePreOpenMenu(state);
+    },
+    menuIsOpen(state) {
+      this.toggleMenu(state);
     }
   },
   methods: {
+    ...mapMutations([
+      'togglePreOpenMenu',
+      'toggleMenu',
+    ]),
   }
 }
 </script>
@@ -59,6 +70,7 @@ export default {
   height: 40px;
   z-index: 11;
   width: 100%;
+  transition: height $main-transition;
   @include screenBreakpoint2(phone) {
     height: 20px;
   }
@@ -68,6 +80,7 @@ export default {
     justify-content: space-between;
     height: 100%;
     padding: 0 40px;
+    transition: padding $main-transition;
     .home-link {
       text-decoration: none;
       h4 {
@@ -104,7 +117,13 @@ export default {
     top: calc(50% - 11px);
     left: 10px;
     width: 20px;
-
+    transition: all $main-transition;
+    &:hover {
+      opacity: 1;
+    }
+    &-box {
+      width: 21px;
+    }
     &-inner,
     &-inner::before,
     &-inner::after {
@@ -127,6 +146,19 @@ export default {
       .hamburger-inner::after {
         background-color: $red;
       }
+    }
+  }
+}
+
+.menu--opened {
+  .header {
+    height: 120px;
+    .container {
+      padding: 0 80px 0 120px;
+    }
+    .hamburger {
+      left: 80px;
+      transform: scale(1.5);
     }
   }
 }

@@ -7,10 +7,14 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     menuIsOpen: false,
+    menuPreOpen: false,
   },
   mutations: {
+    togglePreOpenMenu(state) {
+      state.menuPreOpen = !state.menuPreOpen;
+    },
     toggleMenu(state) {
-        state.menuIsOpen = !state.menuIsOpen;
+      state.menuIsOpen = !state.menuIsOpen;
     },
     closeMenu(state) {
       if (state.menuIsOpen) {

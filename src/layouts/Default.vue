@@ -1,10 +1,11 @@
 <template>
-  <div class="layout" :class="{ 'sticky-header': $route.path === '/' }">
+  <div class="layout" :class="[{ 'menu--preopened': menuPreOpen }, {'menu--opened': menuIsOpen}]">
     <Header />
+    <Menu/>
     <slot/>
     <Footer />
     <Socials/>
-    <div class="borders">
+    <div class="borders" :class="{'borders--big': menuIsOpen}">
       <div class="top"></div>
       <div class="bottom"></div>
       <div class="left"></div>
@@ -14,16 +15,25 @@
 </template>
 
 <script>
-import Header from "@/components/Header"
-import Footer from "@/components/Footer"
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Menu from "@/components/Menu";
 import Socials from "../components/Socials";
+import { mapState } from 'vuex';
 
 export default {
   components: {
     Socials,
     Header,
-    Footer
-  }
+    Footer,
+    Menu
+  },
+  computed: {
+    ...mapState([
+      'menuPreOpen',
+      'menuIsOpen'
+    ]),
+  },
 }
 </script>
 
@@ -48,6 +58,18 @@ body, .layout {
 h1, h2, h3, h4 {
   margin: 0;
   font-family: 'poppinsbold';
+}
+h1 {
+  font-size: 40px;
+}
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 28px;
+}
+h4 {
+  font-size: 24px;
 }
 
 button {
@@ -80,18 +102,8 @@ button {
     height: 40px;
     width: 40px;
     pointer-events: none;
-    -webkit-transition: -webkit-transform 500ms cubic-bezier(0.7, 0, 0.3, 1) 0ms;
-    -moz-transition: -moz-transform 500ms cubic-bezier(0.7, 0, 0.3, 1) 0ms;
-    transition: transform 500ms cubic-bezier(0.7, 0, 0.3, 1) 0ms;
-    -webkit-transform-origin: center center;
-    -moz-transform-origin: center center;
-    -ms-transform-origin: center center;
-    -o-transform-origin: center center;
+    transition: transform $main-transition;
     transform-origin: center center;
-    -webkit-transform: translate(0, 0) scale(1);
-    -moz-transform: translate(0, 0) scale(1);
-    -ms-transform: translate(0, 0) scale(1);
-    -o-transform: translate(0, 0) scale(1);
     transform: translate(0, 0) scale(1);
     @include screenBreakpoint2(phone) {
       width: 20px;
@@ -102,10 +114,6 @@ button {
     top: 0;
     left: 0;
     width: 100%;
-    -webkit-transform-origin: top center;
-    -moz-transform-origin: top center;
-    -ms-transform-origin: top center;
-    -o-transform-origin: top center;
     transform-origin: top center;
     @include screenBreakpoint2(phone) {
       transform: translate(0, -100%) scale(1);
@@ -115,10 +123,6 @@ button {
     bottom: 0;
     left: 0;
     width: 100%;
-    -webkit-transform-origin: bottom center;
-    -moz-transform-origin: bottom center;
-    -ms-transform-origin: bottom center;
-    -o-transform-origin: bottom center;
     transform-origin: bottom center;
     @include screenBreakpoint2(phone) {
       transform: translate(0, 100%) scale(1);
@@ -128,10 +132,6 @@ button {
     top: 0;
     left: 0;
     height: 100%;
-    -webkit-transform-origin: left center;
-    -moz-transform-origin: left center;
-    -ms-transform-origin: left center;
-    -o-transform-origin: left center;
     transform-origin: left center;
     @include screenBreakpoint2(phone) {
       transform: translate(-100%, 0px) scale(1);
@@ -141,14 +141,17 @@ button {
     top: 0;
     right: 0;
     height: 100%;
-    -webkit-transform-origin: right center;
-    -moz-transform-origin: right center;
-    -ms-transform-origin: right center;
-    -o-transform-origin: right center;
     transform-origin: right center;
     @include screenBreakpoint2(phone) {
       transform: translate(100%, 0px) scale(1);
     }
+  }
+}
+
+.menu--opened {
+  overflow: hidden;
+  .borders > * {
+    transform: translate(0, 0%) scale(2);
   }
 }
 </style>

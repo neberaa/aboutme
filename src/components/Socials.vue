@@ -38,6 +38,7 @@ export default {
   align-items: center;
   top: calc(50% - 64px);
   z-index: 11;
+  transition: right $main-transition;
   &__item {
     width: 15px;
     height: 15px;
@@ -56,6 +57,10 @@ export default {
       transition: fill 300ms ease;
     }
   }
-
+}
+.menu--opened {
+  .socials {
+    right: 20px;
+  }
 }
 </style>
