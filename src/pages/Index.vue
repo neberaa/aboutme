@@ -14,7 +14,7 @@
         <div class="page__content">
           <img src="../../uploads/cody-davis-253925-unsplash.jpg" alt="my-photo" class="photo">
           <h3 class="section-header">About me</h3>
-          <div class="description description--hidden" v-text="descriptionFull"/>
+          <div class="description" v-text="descriptionFull"/>
           <div ref="pageAboutDescription" class="description" v-html="desc"/>
         </div>
       </section>
@@ -29,9 +29,9 @@
 <script>
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Splitting from "splitting";
-import "splitting/dist/splitting.css";
-import "splitting/dist/splitting-cells.css";
+// import Splitting from "splitting";
+// import "splitting/dist/splitting.css";
+// import "splitting/dist/splitting-cells.css";
 
 export default {
   metaInfo: {
@@ -49,13 +49,13 @@ export default {
     }
   },
   mounted() {
-    const split = Splitting({
-      target: '.description--hidden',
-      by: 'words',
-    });
-    split[0].words.forEach((w, i) => {
-      this.desc += `<h4>${w.outerHTML}</h4>`;
-    });
+    // const split = Splitting({
+    //   target: '.description--hidden',
+    //   by: 'words',
+    // });
+    // split[0].words.forEach((w, i) => {
+    //   this.desc += `<h4>${w.outerHTML}</h4>`;
+    // });
     gsap.registerPlugin(ScrollTrigger);
     const {pageAbout, pageHomeDot, pageHomeHalf, pageHomeContent, pageAboutDescription} = this.$refs;
 
