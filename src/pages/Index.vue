@@ -53,7 +53,6 @@ export default {
       target: '.description--hidden',
       by: 'words',
     });
-    console.log('splitDesc',  split, this.desc);
     split[0].words.forEach((w, i) => {
       this.desc += `<h4>${w.outerHTML}</h4>`;
     });
