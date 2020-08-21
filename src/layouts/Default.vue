@@ -150,6 +150,7 @@ button {
 
 .menu--opened {
   overflow: hidden;
+  height: 100vh;
   .borders > * {
     transform: translate(0, 0%) scale(2);
   }

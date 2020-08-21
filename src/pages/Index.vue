@@ -65,17 +65,17 @@ export default {
 
 <style lang="scss">
   .page-wrapper {
-    padding: 40px;
     position: relative;
-    height: 100vh;
     width: 100%;
-    @include screenBreakpoint2(phone) {
-      padding: 0;
-    }
+    overflow: hidden;
     .page {
+      padding: 40px;
       width: 100%;
       height: 100vh;
       position: relative;
+      @include screenBreakpoint2(phone) {
+        padding: 0;
+      }
       &--home {
         background: $dark-blue;
         .page__content {
@@ -135,7 +135,7 @@ export default {
     }
   }
   .menu--opened {
-    .page-wrapper {
+    .page {
       padding: 80px;
     }
   }
