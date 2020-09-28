@@ -64,6 +64,9 @@ h1 {
 }
 h2 {
   font-size: 32px;
+  &.jumbo {
+    font-size: 50px;
+  }
 }
 h3 {
   font-size: 28px;

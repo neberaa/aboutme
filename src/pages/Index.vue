@@ -11,15 +11,20 @@
         </div>
       </section>
       <section ref="pageAbout" id="about" class="page page--about">
-        <div class="page__content">
-          <img src="../../uploads/cody-davis-253925-unsplash.jpg" alt="my-photo" class="photo">
-          <h3 class="section-header">About me</h3>
-          <div class="description" v-text="descriptionFull"/>
-          <div ref="pageAboutDescription" class="description" v-html="desc"/>
+        <div ref="pageAboutContent" class="page__content">
+          <img src="../../uploads/avatar.jpg" alt="my-photo" class="photo">
+          <div class="icon">
+            <QRCode/>
+          </div>
+          <h2 class="section-header" v-html="aboutMeTitle"/>
+          <div class="description" v-html="descriptionFull"/>
         </div>
       </section>
       <section ref="pagePortfolio" id="portfolio" class="page page--portfolio">
         <div class="background"/>
+        <div ref="pagePortfolioContent" class="page__content">
+
+        </div>
       </section>
     </div>
   </Layout>
@@ -29,9 +34,10 @@
 <script>
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-// import Splitting from "splitting";
-// import "splitting/dist/splitting.css";
-// import "splitting/dist/splitting-cells.css";
+import Splitting from "splitting";
+import "splitting/dist/splitting.css";
+import "splitting/dist/splitting-cells.css";
+import QRCode from '../assets/icons/qr-code.svg';
 
 export default {
   metaInfo: {
@@ -39,9 +45,12 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' }
     ]
   },
+  components: {
+    QRCode,
+  },
   data() {
     return {
-      desc: '',
+      aboutMeTitle: 'About me',
       descriptionFull: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,\n" +
         "            sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,\n" +
         "            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.\n" +
@@ -49,61 +58,114 @@ export default {
     }
   },
   mounted() {
-    // const split = Splitting({
-    //   target: '.description--hidden',
-    //   by: 'words',
-    // });
-    // split[0].words.forEach((w, i) => {
-    //   this.desc += `<h4>${w.outerHTML}</h4>`;
-    // });
-    gsap.registerPlugin(ScrollTrigger);
-    const {pageAbout, pageHomeDot, pageHomeHalf, pageHomeContent, pageAboutDescription} = this.$refs;
+    this.splitAboutMe().then(() => this.sectionAnimation());
+  },
+  methods: {
+    async splitAboutMe() {
+      const [splittedDesc] = this.splittedText('#about .description');
+      const [splittedTitle] = this.splittedText('#about .section-header');
 
-    gsap.from(pageHomeHalf, {width: '100%', x: 0, delay: 0.5, duration: 1});
-    gsap.from(pageHomeDot, {rotateX: 1440, delay: 2.5, duration: 1});
-    gsap.from(pageHomeContent, {height: "150%", delay: 1, duration: 1});
-    gsap.to(pageHomeContent, {
-      scrollTrigger: {
-        trigger: pageAbout,
-        scrub: 1,
-      },
-      x: '150%',
-      y: '100vh',
-      duration: 0.5
-    });
-    gsap.to(pageHomeHalf, {
-      scrollTrigger: {
-        trigger: pageAbout,
-        scrub: 0.5,
-      },
-      y: '90%',
-      // background: '#f73859',
-      duration: 0.5
-    });
-    setTimeout(() => {
-      gsap.to('.description .word', {
+      this.descriptionFull = '';
+      this.aboutMeTitle = '';
+      splittedDesc.words.forEach((w, i) => {
+        this.descriptionFull += `<h5>${w.outerHTML}</h5>`;
+      });
+      splittedTitle.words.forEach((w, i) => {
+        this.aboutMeTitle += `<h2 class="jumbo">${w.outerHTML}</h2>`;
+      });
+    },
+    splittedText(targetSelector) {
+      return Splitting({
+        target: targetSelector,
+        by: 'words',
+      });
+    },
+    sectionAnimation() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const { pageAbout, pageHomeDot, pageHomeHalf, pageHomeContent, pageAboutContent, pagePortfolio, pagePortfolioContent } = this.$refs;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: pageAbout
+        },
+        duration: 0.4
+      });
+
+      // Home screen
+      gsap.from(pageHomeHalf, {width: '100%', x: 0, delay: 0.5, duration: 0.8});
+      gsap.from(pageHomeDot, {rotateX: 1440, delay: 2, duration: 1});
+      gsap.from(pageHomeContent, {height: "150%", delay: 1, duration: 1});
+      gsap.to(pageHomeContent, {
         scrollTrigger: {
           trigger: pageAbout,
-          start: '+=100'
+          scrub: 1,
+        },
+        x: '150%',
+        y: '100vh',
+        duration: 0.5
+      });
+      gsap.to(pageHomeHalf, {
+        scrollTrigger: {
+          trigger: pageAbout,
+          scrub: 0.5,
+        },
+        y: '90%',
+        // background: '#f73859',
+        duration: 0.5
+      });
+
+      // About me screen
+      tl.from(pageAboutContent, {
+        x: '-50%',
+        opacity: 0
+      });
+      tl.to('.section-header .word', {
+        top: 0,
+        opacity: 1
+      });
+      tl.to('.description .word', {
+        top: 0,
+        opacity: 1
+      });
+      tl.from('.icon', {
+        opacity: 0,
+        duration: 0.6
+      });
+
+      // Portfolio screen
+      gsap.to('.background', {
+        scrollTrigger: {
+          trigger: pageAbout,
+          start: '+=20%',
+          scrub: 1,
         },
         // stagger: 0.1,
-        top: 0,
-        opacity: 1,
+        width: "40vw",
         duration: 1,
-      })
-    }, 1000);
+      });
 
-    gsap.to('.background', {
-      scrollTrigger: {
-        trigger: pageAbout,
-        start: '+=20%',
-        scrub: 1,
-      },
-      // stagger: 0.1,
-      width: "40vw",
-      duration: 1,
-    })
-  }
+      //Footer
+      // gsap.from('.footer', {
+      //   scrollTrigger: {
+      //     trigger: pagePortfolio,
+      //     // scrub: 0.6,
+      //   },
+      //   // stagger: 0.1,
+      //   bottom: "-80px",
+      //   duration: 0.6,
+      // });
+      //
+      // gsap.to('.page-wrapper', {
+      //   scrollTrigger: {
+      //     trigger: pagePortfolio,
+      //     // scrub: 0.6,
+      //   },
+      //   // stagger: 0.1,
+      //   marginBottom: "100px",
+      //   duration: 0.6,
+      // });
+    }
+  },
 }
 </script>
 
@@ -168,31 +230,58 @@ export default {
       &--about {
         .page__content {
           position: absolute;
-          top: 40%;
+          top: 10%;
           max-width: 40%;
+          margin-left: 5%;
+          * {
+            color: $dark-blue;
+          }
           .photo {
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
+            /*border-radius: 50%;*/
+            width: 280px;
+            height: 280px;
+            margin-bottom: 20px;
+          }
+          .icon {
+            position: absolute;
+            top: -40px;
+            right: -100px;
+          }
+          .section-header {
+            margin-bottom: 20px;
+            position: relative;
+            display: block;
+            h2 {
+              overflow: hidden;
+              display: inline-block;
+              position: relative;
+              margin: 0;
+              &:not(:last-of-type) {
+                padding-right: 20px;
+              }
+              .word {
+                opacity: 0;
+                position: relative;
+                top: -35px;
+                color: $red;
+              }
+            }
           }
           .description {
-            &--hidden {
-              display: none;
-            }
-            h4 {
+            h5 {
               overflow: hidden;
               display: inline-block;
               height: 30px;
               position: relative;
+              margin: 0;
+              font-size: 20px;
               &:not(:last-of-type) {
                 padding-right: 5px;
               }
               .word {
-                top: 30px;
                 opacity: 0;
                 position: relative;
-                /*position: absolute;*/
-                /*<!--top: -35px;-->*/
+                top: -35px;
               }
             }
           }
@@ -205,6 +294,11 @@ export default {
           width: 100vw;
           height: 100vh;
           background-size: cover;
+        }
+        .page__content {
+          width: 100%;
+          height: 400px;
+          @include center('y');
         }
       }
     }
